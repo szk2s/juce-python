@@ -1,6 +1,9 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include <pybind11/embed.h>
+namespace py = pybind11;
+
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p)
@@ -9,6 +12,13 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
+    py::scoped_interpreter guard{};
+
+    py::exec(R"(
+        kwargs = dict(name="World", number=42)
+        message = "Hello, {name}! The answer is {number}".format(**kwargs)
+        print(message)
+    )");
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
