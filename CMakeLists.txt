@@ -5,8 +5,6 @@ add_subdirectory(JUCE)
 
 project(juce-python VERSION 0.1.0)
 
-# add_executable(juce-python main.cpp)
-
 juce_add_plugin(JucePythonExamplePlugin
     # VERSION ...                               # Set this if the plugin version is different to the project version
     # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
@@ -24,7 +22,26 @@ juce_add_plugin(JucePythonExamplePlugin
     PRODUCT_NAME "JUCE Python Example")        # The name of the final executable, which can differ from the target name
 
    
-# juce_generate_juce_header(AudioPluginExample)
+set(JUCE_MODULE_LIBS 
+juce::juce_audio_basics
+juce::juce_audio_devices
+juce::juce_audio_formats
+juce::juce_audio_plugin_client
+juce::juce_audio_processors
+juce::juce_audio_utils
+juce::juce_core
+juce::juce_cryptography
+juce::juce_data_structures
+juce::juce_dsp
+juce::juce_events
+juce::juce_graphics
+juce::juce_gui_basics
+juce::juce_gui_extra
+juce::juce_opengl
+juce::juce_product_unlocking)
+
+juce_generate_juce_header(JucePythonExamplePlugin)
+
 target_sources(JucePythonExamplePlugin PRIVATE
     PluginEditor.cpp
     PluginProcessor.cpp)
@@ -40,6 +57,5 @@ target_link_libraries(JucePythonExamplePlugin PRIVATE
     # AudioPluginData           # If we'd created a binary data target, we'd link to it here
     juce::juce_audio_utils
     pybind11::embed
+    ${JUCE_MODULE_LIBS}
     )
-
-# target_link_libraries(juce-python PRIVATE pybind11::embed)

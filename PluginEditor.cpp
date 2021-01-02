@@ -1,6 +1,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include <JuceHeader.h>
 #include <pybind11/embed.h>
 namespace py = pybind11;
 
@@ -12,13 +13,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 300);
-    py::scoped_interpreter guard{};
 
-    py::exec(R"(
-        kwargs = dict(name="World", number=42)
-        message = "Hello, {name}! The answer is {number}".format(**kwargs)
-        print(message)
-    )");
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -33,7 +28,16 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+
+    py::scoped_interpreter guard{};
+
+    py::print("Python is running");
+
+    py::module_ calc = py::module_::import("calc");
+    py::object result = calc.attr("add")(1, 2);
+    int n = result.cast<int>();
+
+    g.drawFittedText (String(n), getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
