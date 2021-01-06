@@ -1,3 +1,3 @@
 # juce-python
 
-Call python script written in `calc.py`, and render the result to Plugin Editor
+Run a python script `calc.py` from C++, and render the result to Plugin Editor
