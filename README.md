@@ -1,3 +1,3 @@
 # juce-python
 
-C++からcalc.pyを呼び出し、その結果をPlugin Editorに表示する
+Call python script written in `calc.py`, and render the result to Plugin Editor
