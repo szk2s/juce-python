@@ -59,3 +59,8 @@ target_link_libraries(JucePythonExamplePlugin PRIVATE
     pybind11::embed
     ${JUCE_MODULE_LIBS}
     )
+
+    # for clang-tidy(this enable to find system header files).
+if(CMAKE_EXPORT_COMPILE_COMMANDS)
+set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
+endif()
